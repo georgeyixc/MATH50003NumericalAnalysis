@@ -17,7 +17,7 @@ Office hour: TBA
 ## Assessment
 
 1. Mock computer-based exam
-2. Computer-based exam (TBA)
+2. Computer-based exam: TBA
 1. Mock final exam
 5. Final exam (pen-and-paper, 80% of term mark): TBA
 
@@ -99,7 +99,7 @@ really understand what the computer is doing. As a bonus, it is easy-to-read and
 
 To run Julia in a Jupyter notebook on your own machine:
 
-1. Download [Julia v1.10](https://julialang.org/downloads/)
+1. Download [Julia v1.11](https://julialang.org/downloads/)
 2. Open the Julia app which will launch a new window
 3. Install the needed packages by typing (`]` will change the prompt to a package manager):
 ```julia
