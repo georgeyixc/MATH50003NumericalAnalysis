@@ -3,11 +3,13 @@ Notes and course material for MATH50003 Numerical Analysis (2024–25)
 
 Lecturer: [Dr Sheehan Olver](https://www.ma.imperial.ac.uk/~solver/)
 
-Office hour: TBA
+Office hour: Mondays, 11am, Huxley 6M40
 
 ## [Notes](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/notes.pdf) up to Week 1
 
 ## Weekly Material
+
+Submit labs/problem sheets to <a href="mailto:venkata.melanathuru19@imperial.ac.uk">GTAs</a> for informal marking/comments.
 
 1. I.1 Rectangular Rule and I.2 Divided Differences
    - [Lab 1](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb)
