@@ -3,7 +3,7 @@ Notes and course material for MATH50003 Numerical Analysis (2024–25)
 
 Lecturer: [Dr Sheehan Olver](https://www.ma.imperial.ac.uk/~solver/)
 
-Office hour: Mondays, 11am, Huxley 6M40
+Office hour: Thursdays, 16:00–17:00, Huxley 6M40
 
 ## [Notes](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/notes.pdf) up to Week 1
 
