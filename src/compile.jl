@@ -39,23 +39,18 @@ compilenotes("A.Asymptotics")
 
 for k = 1:2
     compilesheet(k)
-end
-
-
-for k = 1:0
-    compilesheetsolution(k)
-end
-
-####
-# Labs
-####
-for k = 1:2
     compilelab(k)
     compilelabdemo(k)
 end
 
 
-# compilelabsolution(1)
+for k = 1:1
+    compilesheetsolution(k)
+end
+
+
+
+compilelabsolution(1)
 # compilelabsolution(2)
 # compilelabsolution(3)
 # compilelabsolution(4)
