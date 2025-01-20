@@ -10,10 +10,9 @@ compilenotes("I.2.DividedDifferences")
 compilenotes("I.3.DualNumbers")
 compilenotes("I.4.NewtonMethod")
 
-# compilenotes("II.1.Integers")
-# compilenotes("II.2.Reals")
-# compilenotes("II.3.Arithmetic")
-# compilenotes("II.4.Intervals")
+compilenotes("II.1.Reals")
+compilenotes("II.2.Arithmetic")
+# compilenotes("II.3.Intervals")
 
 # compilenotes("III.1.StructuredMatrices")
 # compilenotes("III.2.DifferentialEquations")
@@ -30,6 +29,7 @@ compilenotes("I.4.NewtonMethod")
 
 
 compilenotes("A.Asymptotics")
+compilenotes("A.Integers")
 # compilenotes("A.Permutations")
 
 
@@ -37,16 +37,23 @@ compilenotes("A.Asymptotics")
 # Sheets
 ####
 
-for k = 1:2
+for k = 1:3
     compilesheet(k)
-    compilelab(k)
-    compilelabdemo(k)
 end
 
 
 for k = 1:1
     compilesheetsolution(k)
 end
+
+####
+# Labs
+####
+for k = 1:3
+    compilelab(k)
+    compilelabdemo(k)
+end
+
 
 
 
