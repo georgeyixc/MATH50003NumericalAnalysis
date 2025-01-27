@@ -12,9 +12,9 @@ compilenotes("I.4.NewtonMethod")
 
 compilenotes("II.1.Reals")
 compilenotes("II.2.Arithmetic")
-# compilenotes("II.3.Intervals")
+compilenotes("II.3.Intervals")
 
-# compilenotes("III.1.StructuredMatrices")
+compilenotes("III.1.StructuredMatrices")
 # compilenotes("III.2.DifferentialEquations")
 # compilenotes("III.3.Cholesky")
 # compilenotes("III.4.Regression")
@@ -30,7 +30,7 @@ compilenotes("II.2.Arithmetic")
 
 compilenotes("A.Asymptotics")
 compilenotes("A.Integers")
-# compilenotes("A.Permutations")
+compilenotes("A.Permutations")
 
 
 ####
