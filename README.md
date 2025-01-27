@@ -20,6 +20,9 @@ Submit labs/problem sheets to <a href="mailto:venkata.melanathuru19@imperial.ac.
 3. II.1 Reals and I.2 Floating Point Arithmetic
    - [Lab 3](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab3.ipynb)
    - [Sheet 3](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet3.pdf)
+4. II.3 Interval Arithmetic and III.1 Structured Matrices
+   - [Lab 4](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab4.ipynb)
+   - [Sheet 4](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet4.pdf)
 
 
 ## Assessment
