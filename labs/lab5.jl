@@ -88,28 +88,7 @@ norm(A \ b - U\(L\b)) # Very large error! A \ b uses pivoting now.
 # Hint: you can either allocate a vector of errors that is populated in a for-loop or write a simple comprehension.
 
 ## TODO: Do a log-log plot for A with its 1,1 entry set to different ε and guess the growth rate.
-## SOLUTION
 
-A = [1.0 1 1;
-     2   4 8;
-     1   4 9]
-
-b = [1,2,3]
-
-
-n = 15
-errs = zeros(n)
-for k = 1:n
-    A[1,1] = 10.0 ^ (1-k)
-    L,U = lu(A, NoPivot())
-    errs[k] = norm(A\b - U \ (L \ b))
-end
-
-nanabs(x) = x == 0 ? NaN : abs(x)
-scatter(0:n-1, nanabs.(errs); yscale=:log10, xticks = 0:15, yticks= 10.0 .^ (-16:0), legend=:bottomright)
-## The error grows exponentially, roughly like 10^k
-
-## END
 
 
 
@@ -172,19 +151,7 @@ x = U \ c # invert U with back substitution
 
 function badmatrix(n)
     ## TODO: make the "bad matrix" with `Int` entries defined above and return it
-    ## SOLUTION
-    A = zeros(Int, n, n)
-    for k = 1:n
-        A[k,n] = 1
-    end
-    for j = 1:n-1
-        A[j,j] = 1
-        for k = j+1:n
-            A[k,j] = -1
-        end
-    end
-    A
-    ## END
+    
 end
 
 @test badmatrix(3) isa Matrix{Int}
@@ -197,10 +164,7 @@ end
 ## TODO: Use `lu` on `badmatrix(n)` and a small perturbation to determine if it
 ## is using pivoting.
 
-## SOLUTION
-lu(badmatrix(5)).p # == 1:5, that is no pivoting has occurred
-lu(badmatrix(5) + eps()randn(5,5)).p # ≠ 1:5, we have pivoted
-## END
+
 
 
 # **Problem 2(c)** We can test the accuracy of a method for inverting a matrix
@@ -212,25 +176,7 @@ lu(badmatrix(5) + eps()randn(5,5)).p # ≠ 1:5, we have pivoted
 
 ## TODO: plot the error norm(A*(A\b) - b) for the perturbed and unperturbed badmatrix(n).
 ## What do you observe?
-## SOLUTION
-baderrs = zeros(4)
-perterrs = zeros(4)
 
-for k = 1:4
-    n = 25k
-    b = randn(n)
-    A = badmatrix(n)
-    Ã = A + 1E-15*randn(n,n)
-    baderrs[k] = norm(A * (A \ b) - b)
-    perterrs[k] = norm(Ã * (Ã \ b) - b)
-end
-
-plot(25:25:100, baderrs; label="bad", yscale=:log10)
-plot!(25:25:100, perterrs; label="perturbed")
-
-## The perturbation errors stay very small, whilst the unperturbed
-## errors blow up.
-## END
 
 
 # -----
@@ -311,12 +257,7 @@ L̃ = cholesky(A).L
 # $$
 
 ## TODO: Check if you got PS5 Q1 correct using a computer to do the Cholesky factorisation.
-## SOLUTION
-cholesky([1 -1; -1 3]) # succeeds so is SPD
-cholesky([1 2 2; 2 1 2; 2 2 1]) # throws an error so not SPD
-cholesky([3 2 1; 2 4 2; 1 2 5]) # succeeds so is SPD
-cholesky([4 2 2 1; 2 4 2 2; 2 2 4 2; 1 2 2 4]) # succeeds so is SPD
-## END
+
 
 
 # **Problem 4** Complete the following
@@ -335,13 +276,7 @@ function mycholesky(A::SymTridiagonal)
 
     ## TODO: populate the diagonal entries ld and the sub-diagonal entries ll
     ## of L so that L*L' ≈ A
-    ## SOLUTION
-    ld[1] = sqrt(d[1])
-    for k = 1:n-1
-        ll[k] = u[k]/ld[k]
-        ld[k+1] = sqrt(d[k+1]-ll[k]^2)
-    end
-    ## END
+    
 
     Bidiagonal(ld, ll, :L)
 end

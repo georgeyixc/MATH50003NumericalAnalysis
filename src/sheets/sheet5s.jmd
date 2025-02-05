@@ -1,166 +1,429 @@
-**Numerical Analysis MATH50003 (2023–24) Problem Sheet 5**
+**Numerical Analysis MATH50003 (2024–25) Problem Sheet 5**
 
-
-
-**Problem 1(a)**  Suppose $|ϵ_k| ≤ ϵ$ and $n ϵ < 1$. Use induction to show that
-$$
-∏_{k=1}^n (1+ϵ_k) = 1+θ_n
-$$
-for some constant $θ_n$ satisfying
-$$
-|θ_n| ≤ \underbrace{n ϵ \over 1-nϵ}_{E_{n,ϵ}}
-$$
-
-**SOLUTION**
-
-$$
-∏_{k=1}^{n+1} (1+ϵ_k) = ∏_{k=1}^n (1+ϵ_k) (1+ϵ_{n+1}) = (1+θ_n)(1+ϵ_{n+1}) = 1 + \underbrace{θ_n + ϵ_{n+1} + θ_nϵ_{n+1}}_{θ_{n+1}}
-$$
-where
-$$
-\begin{align*}
-|θ_{n+1}| &≤ {n ϵ \over 1-nϵ}(1+ϵ) + ϵ \\
-&={n ϵ + n ϵ^2 \over 1-(n+1)ϵ} \underbrace{{1-(n+1)ϵ \over 1-nϵ}}_{≤ 1}  + {ϵ-(n+1)ϵ^2 \over 1-(n+1)ϵ} \\
-&≤ {(n+1)  -  ϵ \over 1-(n+1)ϵ} ϵ ≤ {(n+1) ϵ \over 1-(n+1)ϵ} = E_{n+1,ϵ}.
-\end{align*}
-$$
-
-**END**
-
-
-**Problem 1(b)** Show for an idealised floating point vector $𝐱 ∈ F_{∞,S}^n$ 
-that
-$$
-x_1 ⊕ ⋯ ⊕ x_n = x_1 +  ⋯ + x_n + σ_n
-$$
-where
-$$
-|σ_n| ≤ \| 𝐱 \|_1 E_{n-1,ϵ_{\rm m}/2},
-$$
-assuming $n ϵ_{\rm m} < 2$ and where
-$$
-\|𝐱\|_1 := ∑_{k=1}^n |x_k|.
-$$
-Hint: use the previous part to first write
-$$
-x_1 ⊕ ⋯ ⊕ x_n = x_1(1+θ_{n-1}) + ∑_{j=2}^n x_j (1 + θ_{n-j+1}).
-$$
-
-
-**SOLUTION**
-
-Using Problem 2.1 we write:
-$$
-\meeq{
-(⋯((x_1 + x_2)(1+δ_1) + x_3)(1+δ_2)⋯+x_n)(1+δ_{n-1})
-= x_1 ∏_{k=1}^{n-1} (1+δ_k) +  ∑_{j=2}^n x_j ∏_{k=j-1}^{n-1} (1+δ_j) \ccr
-= x_1(1+θ_{n-1}) + ∑_{j=2}^n x_j (1 + θ_{n-j+1})
-}
-$$
-where we have for $j = 2,…,n$
-$$
-|θ_{n-j+1}| ≤ E_{n-j+1,ϵ_{\rm m}/2} ≤ E_{n-1,ϵ_{\rm m}/2}.
-$$
-Thus we have 
-$$
-∑_{j=1}^n x_j (1 + θ_{n-j+1})= ∑_{j=1}^n x_j + \underbrace{∑_{j=1}^n x_j θ_{n-j+1}}_{σ_n}
-$$
-where
-$$
-|σ_n| ≤  ∑_{j=1}^n |x_j θ_{n-j+1}| ≤ \sup_j |θ_{n-j+1}| ∑_{j=1}^n |x_j|  ≤ \| 𝐱\|_1 E_{n-1,ϵ_{\rm m}/2}.
-$$
-
-
-**END**
-
-
-
-
----------
-
-
-**Problem 2** Derive  Backward Euler: use the left-sided divided difference approximation
-$$
-u'(x) ≈ {u(x) - u(x-h)  \over h}
-$$
-to reduce the first order ODE
-$$
-\meeq{
-u(a) =  c, \qquad u'(x) + ω(x) u(x) = f(x)
-}
-$$
-to a lower triangular system by discretising on the grid $x_j = a + j h$ for $h = (b-a)/n$. Hint: only impose the ODE on the
-gridpoints $x_1,…,x_n$ so that the divided difference does not depend on behaviour at $x_{-1}$.
-
-
-**SOLUTION**
-
-We go through all 4 steps (this is to help you understand what to do. In an exam I will still give full credit if you get the right result,
-even if you don't write down all 4 steps):
-
-(Step 1) Since we need to avoid going off the left in step 2 we start the ODE discretisation at $x_1$:
-$$
-\Vectt[u(x_0), u'(x_1) +  ω(x_1)u(x_1), ⋮, u'(x_n) +  ω(x_n)u(x_n)] = \underbrace{\Vectt[c, f(x_1),⋮,f(x_n)]}_{𝐛}
-$$
-
-(Step 2) Replace with divided differences:
-$$
-\Vectt[u(x_0), (u(x_1)-u(x_0))/h +  ω(x_1)u(x_1), ⋮, (u(x_n)-u(x_{n-1}))/h +  ω(x_n)u(x_n)] ≈ 𝐛
-$$
-
-(Step 3) Replace with discrete system with equality:
-$$
-\Vectt[u_0, (u_1-u_0)/h +  ω(x_1)u_1, ⋮, (u_n-u_{n-1}))/h +  ω(x_n)u_n] = 𝐛
-$$
-
-(Step 4) Write as linear system:
+**Problem 1** Compute the LU factorisation (if possible) and the PLU factorisation,
+where the entry of largest magnitude is always permuted to the diagonal, of the following matrices:
 $$
 \begin{bmatrix}
+1 & 2 & 0 \\
+3 & 1 & 2 \\
+0 & 5 & 1
+\end{bmatrix}, \begin{bmatrix}
+0 &  5 & 5 & 5 \\
+1 & 2 & 0 & 0 \\
+3 & 3 & 3 & 0 \\
+0 & 0  & 3 & 1
+\end{bmatrix}
+$$
+**SOLUTION**
+
+
+_Matrix 1_
+For the LU factorisation we have:
+$$
+A = \begin{bmatrix}
+1 & 2 & 0 \\
+3 & 1 & 2 \\
+0 & 5 & 1
+\end{bmatrix}= \underbrace{\begin{bmatrix}
 1 \\
--1/h & 1/h + ω(x_1) \\
-& ⋱ & ⋱ \\
-&& -1/h & 1/h + ω(x_n)
-\end{bmatrix} \Vectt[u_0,⋮,u_n] = 𝐛
+3 & 1 \\
+0 & 0 & 1
+\end{bmatrix}}_{L_1}   \begin{bmatrix}
+1 & 2 & 0 \\
+ & -5 & 2 \\
+ & 5 & 1
+\end{bmatrix}
+$$
+We now have
+$$
+A_2 = \begin{bmatrix}
+  -5 & 2 \\
+  5 & 1 \end{bmatrix} = 
+  \underbrace{\begin{bmatrix}
+    1\\
+    -1 & 1
+\end{bmatrix}}_{L_2}   \begin{bmatrix}
+  -5 & 2 \\
+   & 3 \end{bmatrix}
+$$
+We can put it together to find:
+$$
+A = \underbrace{\begin{bmatrix}
+1 \\
+3 & 1 \\
+0 & -1 & 1
+\end{bmatrix}}_{L} \underbrace{\begin{bmatrix}
+1 & 2 & 0\\
+ & -5 & 2 \\
+0 & 0 & 3
+\end{bmatrix}}_{U}
+$$
+
+For the PLU factorisation we need to permute the largest entry to the diagonal
+each stage:
+$$
+\underbrace{\begin{bmatrix} 0 & 1 \\
+1 & 0 \\
+&& 1 \end{bmatrix}}_{P_1} A = \begin{bmatrix}
+3 & 1 & 2 \\
+1 & 2 & 0 \\
+0 & 5 & 1
+\end{bmatrix} = \underbrace{\begin{bmatrix}
+1 &  &  \\
+1/3 & 1 &  \\
+0 & 0 & 1
+\end{bmatrix}}_{L_1} \begin{bmatrix}
+3 & 1 & 2 \\
+1 & 5/3 & -2/3 \\
+0 & 5 & 1
+\end{bmatrix}
+$$
+We now permute again since $5 > 5/3$:
+$$
+\underbrace{\begin{bmatrix} 0 & 1 \\
+1 & 0 \end{bmatrix}}_{P_2} A_2 = \begin{bmatrix}5 & 1 \\
+5/3 & -2/3 \end{bmatrix} = \underbrace{\begin{bmatrix}1 \\
+1/3 & 1 \end{bmatrix}}_{L_2} \begin{bmatrix} 5 & 1 \\ & -1 \end{bmatrix}
+$$
+We thus have:
+$$
+P_1 A = L_1 \begin{bmatrix} 1 \\ & P_2^⊤ L_2 \end{bmatrix} \underbrace{\begin{bmatrix}  3 & 1 & 2 \\ 
+    & 5 & 1 \\ && -1 \end{bmatrix}}_U = 
+    = \begin{bmatrix} 1 \\ & P_2^⊤ \end{bmatrix} 
+    \underbrace{\begin{bmatrix} 1 \\ 
+    0 & 1 \\
+    1/3 & 1/3 & 1 \end{bmatrix}}_L U,
+$$
+that is,
+$$
+P = \begin{bmatrix} 1 \\ & P_2 \end{bmatrix} P_1 = \begin{bmatrix}
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 0 & 0
+\end{bmatrix}
+$$
+
+
+_Matrix 2_
+
+This has no LU factorisation since the first entry is 0 so we only deduce the PLU. First permute the largest entry to the diagonal
+by a simple swap and factor:
+$$
+\underbrace{\begin{bmatrix}
+0 &  & 1 \\
+ & 1 \\
+ 1 & & 0 \\
+ &&& 1
+\end{bmatrix}}_{P_1} A = \begin{bmatrix} 3 & 3 &3 \\
+1 & 2 \\
+ & 5  & 5 & 5 \\
+ && 3 & 1 
+ \end{bmatrix} = 
+  \underbrace{\begin{bmatrix} 1 &  & \\
+1 & 1 \\
+1/3 &   &  1 \\
+ &&  & 1 
+ \end{bmatrix}}_{L_1}
+  \begin{bmatrix} 3 & 3 &3 \\
+ & 1 & -1 \\
+ & 5  & 1 & 2 \\
+ && 3 & 1 
+ \end{bmatrix}
+$$
+We repeat with the subslice:
+$$
+\underbrace{\begin{bmatrix}
+0 & 1 &  \\
+1 & 0 \\
+  & & 1 \\
+\end{bmatrix}}_{P_2}  A_2 =
+  \begin{bmatrix} 
+  5  & 5 & 5 \\
+  1 & -1 \\
+ & 3 & 1 
+ \end{bmatrix} = 
+   \underbrace{\begin{bmatrix} 
+  1  &  &  \\
+  1/5 & 1 \\
+0 &  & 1 
+ \end{bmatrix}}_{L_2}   \begin{bmatrix} 
+  5  & 5 & 5 \\
+   & -2 & -1 \\
+ & 3 & 1 
+ \end{bmatrix}
+$$
+Finally, we have
+$$
+\underbrace{\begin{bmatrix}
+0 & 1   \\
+1 & 0 
+\end{bmatrix}}_{P_3}  A_3 = \begin{bmatrix}3 & 1 \\ -2 & -1 \end{bmatrix}
+= \underbrace{\begin{bmatrix}1 &  \\ -2/3 & 1 \end{bmatrix}}_{L_3}
+\underbrace{\begin{bmatrix}3 & 1 \\  & -1/3 \end{bmatrix}}_{U_3}
+$$
+
+We now need to swap the lower matrices and permutations which we do one step at a time. 
+We already know $A_3 = P_3^⊤ L_3 U_3$ which tells us that
+$$
+\meeq{
+A_2 = P_2^⊤ L_2 \begin{bmatrix} α_2 & 𝐰_2^⊤ \\ & A_3 \end{bmatrix} = 
+P_2^⊤ \begin{bmatrix} 1 \\ & P_3^⊤ \end{bmatrix} \begin{bmatrix}
+1 \\
+P_3 𝐯_2/α_2 & L_3 \end{bmatrix}  \begin{bmatrix} α_2 & 𝐰_2^⊤ \\ & U_3 \end{bmatrix} \ccr
+= \underbrace{\begin{bmatrix}
+0 & 0 & 1 \\
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{bmatrix}}_{P̃_2^⊤} \underbrace{\begin{bmatrix} 1 \\ 
+0 & 1 \\
+1/5 & -2/3 & 1 \end{bmatrix}}_{L̃_2} \underbrace{\begin{bmatrix} 
+  5  & 5 & 5 \\
+   & 3 & 1 \\
+ &  & -1/3 
+ \end{bmatrix}}_{Ũ_2}
+}
+$$
+Finally,
+$$
+\meeq{
+A = P_1^⊤ L_1 \begin{bmatrix} α_1 & 𝐰_1^⊤ \\ & A_2 \end{bmatrix} = 
+P_1^⊤ \begin{bmatrix} 1 \\ & P̃_2^⊤ \end{bmatrix} \begin{bmatrix}
+1 \\
+P̃_2 𝐯_1/α_1 & L̃_2 \end{bmatrix}  \begin{bmatrix} α_1 & 𝐰_1^⊤ \\ & Ũ_2 \end{bmatrix} \ccr
+= \underbrace{\begin{bmatrix}
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1\\
+1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0
+\end{bmatrix}}_{P^⊤}   \underbrace{\begin{bmatrix}1 \\
+1/3 & 1 \\ 
+0 &  0 & 1 \\
+1& 1/5 & -2/3 & 1 \end{bmatrix}}_{L} \underbrace{\begin{bmatrix} 
+ 3 & 3 &3 & 0\\
+  &5  & 5 & 5 \\
+   && 3 & 1 \\
+ &  && -2/3 
+ \end{bmatrix}}_{U}
+}
+$$
+
+
+
+
+**END**
+
+
+------
+
+**Problem 2** By computing the Cholesky factorisation, determine
+which of the following matrices are symmetric positive definite:
+$$
+\begin{bmatrix} 1 & -1  \\
+-1 & 3
+\end{bmatrix}, \begin{bmatrix} 1 & 2 & 2  \\
+2 & 1 & 2\\
+2 & 2 & 1
+\end{bmatrix},
+\begin{bmatrix} 4 & 2 & 2 & 1  \\
+2 & 4 & 2 & 2\\
+2 & 2 & 4 & 2 \\
+1 & 2 & 2 & 4
+\end{bmatrix}
+$$
+
+**SOLUTION**
+
+A matrix is symmetric positive definite (SPD) if and only if it has a Cholesky factorisation, so the task here is really just to compute Cholesky factorisations (by hand). Since our goal is to tell if the Cholesky factorisations exist, we do not have to compute $L_k$'s. We only need to see if the factorisation process can continue to the end.
+
+*Matrix 1*
+
+$$A_0=\begin{bmatrix} 1 & -1  \\
+-1 & 3
+\end{bmatrix}$$
+and     $A_1=3-\frac{(-1)×(-1)}{1}>0$, so Matrix 1 is SPD.
+
+*Matrix 2*
+
+$$A_0=\begin{bmatrix}
+1 & 2 & 2 \\
+2 & 1 & 2 \\
+2 & 2 & 1
+\end{bmatrix}$$
+Then
+$$
+A_1=\begin{bmatrix}
+1&2\\
+2&1
+\end{bmatrix}-\begin{bmatrix} 2 \\ 2 \end{bmatrix}\begin{bmatrix} 2 & 2 \end{bmatrix}=
+\begin{bmatrix}
+-3&-2\\
+-2&-3
+\end{bmatrix}
+$$
+and finally $A_1[1,1] ≤ 0$, so Matrix 2 is not SPD.
+
+*Matrix 3*
+
+$$
+A_0=\begin{bmatrix}
+4 & 2 & 2 & 1 \\
+2 & 4 & 2 & 2 \\
+2 & 2 & 4 & 2 \\
+1 & 2 & 2 & 4
+\end{bmatrix}
+$$
+and then
+$$
+A_1=\begin{bmatrix}
+4&2&2\\
+2&4&2\\
+2&2&4
+\end{bmatrix}-\frac{1}{4}\begin{bmatrix} 2 \\ 2 \\ 1 \end{bmatrix}\begin{bmatrix} 2 & 2 & 1 \end{bmatrix}=\frac{1}{4}
+\begin{bmatrix}
+12&4&6\\
+4&12&6\\
+6&6&15
+\end{bmatrix}
+$$
+Furthermore
+$$
+4A_2=\begin{bmatrix}
+12&6\\
+6&15
+\end{bmatrix}-\frac{1}{12}\begin{bmatrix} 4 \\ 6 \end{bmatrix}\begin{bmatrix} 4 & 6 \end{bmatrix}=\frac{4}{3}
+\begin{bmatrix}
+8&3\\
+3&9
+\end{bmatrix}
+$$
+and finally $3A_3=9-\frac{3× 3}{8}>0$, so Matrix 4 is SPD.
+
+
+**END**
+
+**Problem 3** Show that a matrix $A ∈ ℝ^{n × n}$ is symmetric positive definite if and only if it has a _reverse_ Cholesky
+factorisation of the form
+$$
+A = U U^⊤
+$$
+where $U$ is upper triangular with positive entries on the diagonal.
+
+**SOLUTION**
+
+Note $𝐱^⊤ U U^⊤ 𝐱 = \| U^⊤ 𝐱 \| > 0$ since $U$ is invertible.
+
+For the other direction, we replicate the proof by induction for standard Cholesky,
+beginning in the bottom right
+instead of the top left. Again the basis case is trivial. Since all diagonal entries are positive we can write
+$$
+A = \begin{bmatrix} K & 𝐯\\
+                    𝐯^⊤ & α \end{bmatrix} =
+                    \underbrace{\begin{bmatrix} I & {𝐯 \over \sqrt{α}} \\
+                                        & \sqrt{α}
+                                        \end{bmatrix}}_{U_1}
+                    \begin{bmatrix} K - {𝐯 𝐯^⊤ \over α}  & \\
+                     & 1 \end{bmatrix}
+                     \underbrace{\begin{bmatrix} I \\
+                      {𝐯^⊤ \over \sqrt{α}} & \sqrt{α}
+                                        \end{bmatrix}}_{U_1^⊤}
+$$
+By assumption $K - {𝐯 𝐯^⊤ \over α} = \Ut\Ut^⊤$ hence we have
+$$
+A = \underbrace{U_1 \begin{bmatrix} \Ut \\ & 1 \end{bmatrix}}_U  \underbrace{\begin{bmatrix} \Ut^\top \\ & 1 \end{bmatrix} U_1^\top}_{U^\top}
 $$
 
 
 **END**
 
 
-**Problem 3** Reduce a Schrödinger equation to a tridiagonal linear system by discretising on the grid $x_j = a + j h$ for $h = (b-a)/n$:
+**Problem 4(a)** Use the Cholesky factorisation to prove that the following $n × n$ matrix is symmetric positive definite
+for any $n$:
 $$
-\meeq{
-u(a) =  c,\qquad u''(x) + V(x) u(x) = f(x), \qquad u(b) = d.
-}
+Δ_n := \begin{bmatrix}
+2 & -1 \\
+-1 & 2 & -1 \\
+& -1 & 2 & ⋱ \\
+&& ⋱ & ⋱ & -1 \\
+&&& -1 & 2
+\end{bmatrix}
 $$
+Hint: consider a matrix $K_n^{(α)}$ that equals $Δ_n$ apart from the top left entry which is $α > 1$ and use a proof by induction.
+
 
 **SOLUTION**
 
-(Step 1) 
+Consider the first step of the Cholesky factorisation:
 $$
-\Vectt[u(x_0), u''(x_1) + V(x_1) u(x_1), ⋮, u'(x_{n-1}) + V(x_{n-1}) u(x_{n-1}), u(x_n)] = \underbrace{\Vectt[c, f(x_1),⋮,f(x_{n-1}), d]}_{𝐛}
+Δ_n = \begin{bmatrix} 2 & -𝐞_1^⊤ \\
+                    -𝐞_1 & Δ_{n-1} \end{bmatrix} =
+                    \underbrace{\begin{bmatrix} \sqrt{2} \\
+                                    {-𝐞_1 \over \sqrt{2}} & I
+                                        \end{bmatrix}}_{L_1}
+                    \begin{bmatrix}1 \\ & Δ_{n-1} - {𝐞_1 𝐞_1^⊤ \over 2} \end{bmatrix}
+                    \underbrace{\begin{bmatrix} \sqrt{2} & {-𝐞_1^⊤ \over \sqrt{2}} \\
+                                                            & I
+                                        \end{bmatrix}}_{L_1^⊤}
+$$
+The bottom right is merely $Δ_{n-1}$ but with a different $(1,1)$ entry! This hints at a strategy
+of proving by induction.
+
+Assuming $α > 1$ write
+$$
+K_n^{(α)} := \begin{bmatrix}
+α & -1 \\
+-1 & 2 & -1 \\
+& -1 & 2 & ⋱ \\
+&& ⋱ & ⋱ & -1 \\
+&&& -1 & 2
+\end{bmatrix} =
+                    \begin{bmatrix} \sqrt{α} \\
+                                    {-𝐞_1 \over \sqrt{α}} & I
+                                        \end{bmatrix}
+                    \begin{bmatrix}1 \\ & K_{n-1}^{(2 - 1/α)} \end{bmatrix}
+                    \begin{bmatrix} \sqrt{α} & {-𝐞_1^⊤ \over \sqrt{α}} \\
+                                                            & I
+                                        \end{bmatrix}
+$$
+Note if $n = 1$ this is trivially SPD. Hence assume $K_{n-1}^{(α)}$ is SPD for all $α > 1$.
+If $α > 1$ then $2 - 1/α > 1$. Hence by induction and the fact that $Δ_n = K_n^{(2)}$
+we conclude that $Δ_n$ has a Cholesky factorisation and hence is symmetric positive definite.
+
+**END**
+
+**Problem 4(b)**
+Deduce its Cholesky factorisations: $Δ_n = L_n L_n^⊤$ where
+$L_n$ is lower triangular.
+
+**SOLUTION**
+
+We can  write down the factors explicitly: define $α_1 := 2$ and
+$$
+α_{k+1} = 2- 1/α_k.
+$$
+Let's try out the first few:
+$$
+α_1 = 2, α_2 = 3/2, α_3 = 4/3, α_4 = 5/4, …
+$$
+The pattern is clear and one can show by induction that $α_k = (k+1)/k$. Thus we have the Cholesky factorisation
+$$
+\meeq{
+Δ _n = \underbrace{\begin{bmatrix}
+\sqrt{2} \\
+-1/\sqrt{2} & \sqrt{3/2} \\
+& -\sqrt{2/3} & \sqrt{4/3} \\
+    && ⋱ & ⋱ \\
+    &&& -\sqrt{(n-1)/n} & \sqrt{(n+1)/n}
+    \end{bmatrix}}_{L_n}  \\
+    & \qquad ×     \underbrace{\begin{bmatrix}
+\sqrt{2} & -1/\sqrt{2} \\
+ & \sqrt{3/2} & -\sqrt{2/3} \\
+    && ⋱ & ⋱ \\
+    &&& \sqrt{n/(n-1)} & -\sqrt{(n-1)/n} \\
+    &&&& \sqrt{(n+1)/n}
+    \end{bmatrix}}_{L_n^⊤}
+}
 $$
 
-(Step 2) Replace with divided differences:
-$$
-\Vectt[u(x_0), (u(x_0)-2u(x_1)+u(x_2))/h^2 + V(x_1)u(x_1), ⋮, (u(x_{n-2} - 2u(x_{n-1})+u(x_n))/h^2 + V(x_{n-1})u(x_{n-1}), u(x_n)] ≈ 𝐛
-$$
-
-(Step 3) Replace with discrete system with equality:
-$$
-\Vectt[u_0, (u_0-2u_1+u_2)/h^2 + V(x_1)u_1, ⋮, (u_{n-2}-2u_{n-1}+u_n))/h^2+ V(x_{n-1})u_{n-1},u_n] = 𝐛
-$$
-
-(Step 4) Write as a tridiagonal linear system:
-$$
-\begin{bmatrix}
-1 \\
-1/h^2 & V(x_1)-2/h^2 & 1/h^2 \\
-& ⋱ & ⋱ & ⋱ \\
-&&1/h^2 & V(x_{n-1})-2/h^2 & 1/h^2 \\
-&& &&1
-\end{bmatrix} \Vectt[u_0,⋮,u_n] = 𝐛
-$$
 
 
 **END**
