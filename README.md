@@ -30,8 +30,9 @@ Submit labs/problem sheets to <a href="mailto:venkata.melanathuru19@imperial.ac.
 
 ## Assessment
 
-1. Mock computer-based exam: TBA
-2. Computer-based exam: TBA
+1. SEW familiarisation session: 7 March
+2. Mock computer-based exam
+2. Computer-based exam: 14 March, 10:00–12:00 (1 hour exam)
 5. Final exam (pen-and-paper, 80% of term mark): TBA
 
 
