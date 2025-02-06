@@ -290,12 +290,12 @@ bitstring(-11) # "11111111111111111111111111111111111111111111111111111111111101
 ## END
 
 # **Problem 3(b)** Combine `parse`, `reinterpret`, and `UInt8` to convert the
-# above string to a (negative) `Int8` with the specified bits.
+#  string  `"10001011"` to a (negative) `Int8` with the specified bits.
 
 ## TODO: combine parse and reinterpret 
 ## SOLUTION
 
-## The above code creates the bits "11110101". Instead, we first parse the bits:
+## The  code `parse(Int8, "-00001011"; base=2)` creates an `Int8` with bits "11110101". Instead, we first parse the bits:
 
 x = reinterpret(Int8, parse(UInt8, "10001011"; base=2)) # -117
 bitstring(x)

@@ -275,7 +275,7 @@ bitstring(-11)
 
 
 # **Problem 3(b)** Combine `parse`, `reinterpret`, and `UInt8` to convert the
-# above string to a (negative) `Int8` with the specified bits.
+#  string  `"10001011"` to a (negative) `Int8` with the specified bits.
 
 ## TODO: combine parse and reinterpret 
 
