@@ -55,9 +55,9 @@ A = \ensuremath{\bm{\x}} \underbrace{\begin{bmatrix} y_1 & \ensuremath{\cdots} &
 \subsection{LU factorisation}
 Gaussian elimination  can be interpreted as an LU factorisation. Write a matrix $A \ensuremath{\in} \ensuremath{\bbF}^{n \ensuremath{\times} n}$ as follows:
 \[
-A =  \begin{bmatrix} \ensuremath{\alpha}_1 & \ensuremath{\bm{\w}}_1^\ensuremath{\top} \\ \ensuremath{\bm{\v}}_1 & K_1 \end{bmatrix}
+A =  \begin{bmatrix} \ensuremath{\alpha} & \ensuremath{\bm{\w}}^\ensuremath{\top} \\ \ensuremath{\bm{\v}} & K \end{bmatrix}
 \]
-where $\ensuremath{\alpha} = a_{11}$, $\ensuremath{\bm{\v}} = A[2:n, 1]$ and $\ensuremath{\bm{\w}} = A[1, 2:n]$ (that is, $\ensuremath{\bm{\v}} \ensuremath{\in} \ensuremath{\bbF}^{n-1}$ is a vector whose entries are the 2nd through last row of the first column of $A$ whilst $\ensuremath{\bm{\w}} \ensuremath{\in} \ensuremath{\bbF}^{n-1}$ is a vector containing the 2nd through last column of the first row of $A$). Gaussian elimination consists of taking the first row, dividing by $\ensuremath{\alpha}_1$ and subtracting from all other rows. That is equivalent to multiplying by a lower triangular matrix:
+where $\ensuremath{\alpha} = a_{11}$, $\ensuremath{\bm{\v}} = A[2:n, 1]$ and $\ensuremath{\bm{\w}} = A[1, 2:n]$ (that is, $\ensuremath{\bm{\v}} \ensuremath{\in} \ensuremath{\bbF}^{n-1}$ is a vector whose entries are the 2nd through last row of the first column of $A$ whilst $\ensuremath{\bm{\w}} \ensuremath{\in} \ensuremath{\bbF}^{n-1}$ is a vector containing the 2nd through last column of the first row of $A$). Gaussian elimination consists of taking the first row, dividing by $\ensuremath{\alpha}$ and subtracting from all other rows. That is equivalent to multiplying by a lower triangular matrix:
 \[
 \underbrace{\begin{bmatrix}
 1 \\

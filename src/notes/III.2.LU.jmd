@@ -65,10 +65,10 @@ $$
 Gaussian elimination  can be interpreted as an LU factorisation. Write a matrix
 $A ∈ 𝔽^{n × n}$ as follows:
 $$
-A =  \begin{bmatrix} α_1 & 𝐰_1^⊤ \\ 𝐯_1 & K_1 \end{bmatrix}
+A =  \begin{bmatrix} α & 𝐰^⊤ \\ 𝐯 & K \end{bmatrix}
 $$
 where $α = a_{11}$, $𝐯 = A[2:n, 1]$ and $𝐰 = A[1, 2:n]$ (that is, $𝐯 ∈ 𝔽^{n-1}$ is a vector whose entries are the 2nd through last row of the first column of $A$ whilst $𝐰 ∈ 𝔽^{n-1}$ is a vector containing the 2nd through last column of the first row of $A$). Gaussian elimination consists of taking the first row, dividing by
-$α_1$ and subtracting from all other rows. That is equivalent to multiplying by a lower triangular matrix:
+$α$ and subtracting from all other rows. That is equivalent to multiplying by a lower triangular matrix:
 $$
 \underbrace{\begin{bmatrix}
 1 \\
