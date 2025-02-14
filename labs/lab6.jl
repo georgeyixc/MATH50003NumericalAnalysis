@@ -120,17 +120,7 @@ size(Q::Rotations) = (length(Q.θ)+1, length(Q.θ)+1)
 function *(Q::Rotations, x::AbstractVector)
     ## TODO: Apply Q in O(n) operations. You may assume x has Float64 entries.
     ## Hint: you may wish to use copy(x) and only change the relevant entries. 
-    ## SOLUTION
-    y = copy(x) # copies x to a new Vector 
-    θ = Q.θ
-    ## Does Q1....Qn x
-    for k = length(θ):-1:1
-        #below has 4 ops to make the matrix and 12 to do the matrix-vector multiplication,
-        #total operations will be 48n = O(n)
-        c, s = cos(θ[k]), sin(θ[k])
-        y[k:(k+1)] = [c -s; s c] * y[k:(k+1)]
-    end
-    ## END
+    
 
     y
 end
@@ -138,17 +128,7 @@ end
 function getindex(Q::Rotations, k::Int, j::Int)
     ## TODO: Return Q[k,j] in O(n) operations using *.
 
-    ## SOLUTION
-    ## recall that A_kj = e_k'*A*e_j for any matrix A
-    ## so if we use * above, this will take O(n) operations
-    n = size(Q)[1]
-    ej = zeros(eltype(Q), n)
-    ej[j] = 1
-    ## note, must be careful to ensure that ej is a VECTOR
-    ## not a MATRIX, otherwise * above will not be used
-    Qj = Q * ej
-    Qj[k]
-    ## END
+    
 end
 
 θ = randn(5)
@@ -241,19 +221,11 @@ size(Q::Reflection) = (length(Q.v),length(Q.v))
 function getindex(Q::Reflection, k::Int, j::Int)
     ## TODO: implement Q[k,j] == (I - 2v*v')[k,j] but using O(1) operations.
     ## Hint: the function `conj` gives the complex-conjugate
-    ## SOLUTION
-    if k == j
-        1 - 2Q.v[k]*conj(Q.v[j])
-    else
-        - 2Q.v[k]*conj(Q.v[j])
-    end
-    ## END
+    
 end
 function *(Q::Reflection, x::AbstractVector)
     ## TODO: implement Q*x, equivalent to (I - 2v*v')*x but using only O(n) operations
-    ## SOLUTION
-    x - 2*Q.v * dot(Q.v,x) # (Q.v'*x) also works instead of dot
-    ## END
+    
 end
 
 ## If your code is correct, these "unit tests" will succeed
@@ -280,15 +252,7 @@ Q = Reflection(v)
 
 function householderreflection(s::Bool, x::AbstractVector)
     ## TODO: return a Reflection corresponding to a Householder reflection
-    ## SOLUTION
-    y = copy(x) # don't modify x
-    if s
-        y[1] -= norm(x)
-    else
-        y[1] += norm(x)
-    end
-    Reflection(y/norm(y))
-    ## END
+    
 end
 
 x = randn(5)
@@ -326,12 +290,7 @@ function *(Q::Reflections, x::AbstractVector)
     ## TODO: Apply Q in O(mn) operations by applying
     ## the reflection corresponding to each column of Q.V to x
     
-    ## SOLUTION
-    m,n = size(Q.V)
-    for j = n:-1:1
-        x = Reflection(Q.V[:, j]) * x
-    end
-    ## END
+    
 
     x
 end
@@ -352,21 +311,13 @@ end
 function getindex(Q::Reflections, k::Int, j::Int)
     ## TODO: Return Q[k,j] in O(mn) operations (hint: use *)
 
-    ## SOLUTION
-    T = eltype(Q.V)
-    m,n = size(Q)
-    eⱼ = zeros(T, m)
-    eⱼ[j] = one(T)
-    return (Q*eⱼ)[k]
-    ## END
+    
 end
 
 import LinearAlgebra: adjoint
 function adjoint(Q::Reflections) # called when calling Q'
     ## TODO: return the adjoint as a Reflections
-    ## SOLUTION
-    Reflections(Q.V[:,end:-1:1])
-    ## END
+    
 end
 
 Y = randn(5,3)
@@ -468,21 +419,7 @@ function householderqr(A)
     for j = 1:n
         ## TODO: rewrite householder QR to use Reflection,
         ## Reflections and householderreflection, in a way that one achieves O(mn^2) operations
-        ## SOLUTION
-        𝐚₁ = Aⱼ[:,1] # first columns of Aⱼ
-        Q₁ = householderreflection(𝐚₁[1] < 0, 𝐚₁)
-        Q₁Aⱼ = Q₁*Aⱼ
-        α,𝐰 = Q₁Aⱼ[1,1],Q₁Aⱼ[1,2:end]
-        Aⱼ₊₁ = Q₁Aⱼ[2:end,2:end]
-
-        ## populate returned data
-        R[j,j] = α
-        R[j,j+1:end] = 𝐰
-
-        Q.V[j:end, j] = Q₁.v
-
-        Aⱼ = Aⱼ₊₁ # this is the "induction"
-        ## END
+        
     end
     Q,R
 end
@@ -557,37 +494,7 @@ function bandedqr(A::Tridiagonal)
 
     ## TODO: Populate Q and R by looping through the columns of A.
 
-    ## SOLUTION
-    ## In what follows we use both A and R simultaneously, where R
-    ## represents the upper-triangular part of the modified A, up to rows j.
-    ## At each stage we apply the rotation Q_j that introduces a zero
-    ## in the (j+1,j) entry of A. 
-
-    ## To begin with we haven't applied Q so R contains just the first row of A.
-
-    R[1, 1:2] = A[1, 1:2]
-        
-    for j = 1:n-1
-        ## We determine the angle of rotation. Note R contains the updated entries
-        ## on or above the diagonal whilst A containss the unmodified entries below the diagonal.
-        x_1 = [R[j, j], A[j+1, j]]
-        Q.θ[j] = atan(x_1[2], x_1[1])
-        Q_1 = Rotation(-Q.θ[j]) # rotate in opposite direction 
-        ## Q satisfies Q*[ R[j,j],A[j+1,j]] = [sqrt(R[j,j]^2+A[j+1,j]^2), 0]
-        ## Or we can just write this as:
-        R[j, j] = (Q_1 * x_1)[1]
-
-        ## We now apply this to the rest of the columns to update R.
-        x_2 = [R[j, j+1]; A[j+1, j+1]]
-        R[j:j+1, j+1] = Q_1 * x_2
-
-        if j < n - 1 # need to avoid going beyond the dimension
-            ## We use the fact that A is banded so there is a 0.
-            x_3 = [0, A[j+1, j+2]]
-            R[j:j+1, j+2] = Q_1 * x_3
-        end
-    end
-    ## END
+    
     Q, R
 end
 
@@ -623,11 +530,7 @@ c̃ = c[1:size(R̂,1)] # drop extra entries
 
 function leastsquares(A, b)
     ## TODO: use householderqr to solve a least squares problem.
-    ## SOLUTION
-    m,n = size(A)
-    Q, R = householderqr(A)
-    UpperTriangular(R[1:n,1:n])\(Q'b)[1:n]
-    ## END
+    
 end
 
 @test A\b ≈ leastsquares(A,b)

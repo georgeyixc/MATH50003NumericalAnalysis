@@ -1,7 +1,23 @@
 # Orthogonal and Unitary Matrices
 
-To solve least squares problems, we will  factorise a matrix $A$ as $A = QR$
-where $R$ is a _right-triangular matrix_ and $Q$ is either an _orthogonal_ or _unitary_ matrix.
+
+PLU factorisations are an effective scheme for inverting systems, however, we saw in the lab that for very special matrices it can fail to be
+accurate. In the next two sections we introduce an alternative approach that is guaranteed to be stable: factorise a matrix as
+$$
+A = QR
+$$
+where $Q$ is an orthogonal/unitary matrix and $R$ is a _right-triangular matrix_, which for square matrices is another name for upper-triangular.
+
+This factorisation is valid for rectangular matrices $A ∈ ℂ^{m × n}$, where now _right-triangular_ is a rectangular version of upper-triangular. For rectangular systems
+we can no longer solve linear systems of the form $A𝐱 = 𝐛$ (unless $𝐛$ lies in the column span of $A$) but instead we want to solve $A𝐱 ≈ 𝐛$,
+where $𝐱 ∈ ℂ^n$ and $𝐛 ∈ ℂ^m$. More precisely,
+we can use a QR factorisation to solve _least squares_ problems, find $𝐱$ that minimises the 2-norm:
+$$
+\|A 𝐱 - 𝐛 \|
+$$
+
+Before we discuss the computation of a QR factorisation and its role in solving least-squares problems, we introduce orthogonal and unitary matrices.
+In particular we will discuss reflections and rotations, which can be used to represent more general orthogonal matrices.
 
 **Definition (orthogonal/unitary matrix)** A square real matrix is _orthogonal_ if its inverse is its transpose:
 $$
@@ -27,8 +43,8 @@ numerical linear algebra for a number of reasons (we'll explore these properties
 4. They are _normal matrices_: they commute with their adjoint ($Q Q^⋆ = Q Q^⋆$). 
 5. Both $O(n)$ and $U(n)$ are groups, in particular, they are closed under multiplication.
 
-On a computer there are multiple ways of representing orthogonal/unitary matrices,
-and it is almost never to store a dense matrix, that is, we do not want to store all the entries.
+On a computer there are multiple ways of representing orthogonal/unitary matrices. The obvious way is to store
+entries  as a dense matrix, however, this is very inefficient.
 In the appendices we have seen permutation matrices, which
 are a special type of orthogonal matrices where we can store only the order the entries are permuted as a vector. 
 
@@ -43,7 +59,7 @@ We remark a related concept to orthogonal/unitary matrices are rectangular matri
 $$
 U = [𝐮_1 | ⋯ | 𝐮_n] ∈ ℂ^{m × n}
 $$
-where $m ≥ n$ such that $U^⋆ U =  I_n$ (the $n × n$ identity matrix). In this case we must have $UU^⋆ ≠ I_m$ as the rank of $U$ is $n < m$. 
+where $m ≥ n$ such that $U^⋆ U =  I_n$ (the $n × n$ identity matrix). In the case where $m > n$ we must have $UU^⋆ ≠ I_m$ as the rank of $U$ is $n < m$. 
 
 
 ## Rotations
@@ -88,7 +104,7 @@ We have $Q ∈ SO(2)$ if and only if $Q = Q_θ$ for some $θ ∈ ℝ$.
 
 **Proof**
 
-We will write $c = \cos θ$ and $s = \sin θ$. Then we have
+First assume $Q_θ$ is of that form and write $c = \cos θ$ and $s = \sin θ$. Then we have
 $$
 Q_θ^⊤Q_θ = \begin{pmatrix} c & s \\ -s & c \end{pmatrix} \begin{pmatrix} c & -s \\ s & c \end{pmatrix} = 
 \begin{pmatrix} c^2 + s^2 & 0 \\ 0 & c^2 + s^2 \end{pmatrix} = I
@@ -236,7 +252,7 @@ $$
 
 ### Householder reflections
 
-Just as rotations can be used to rotate vectors to be aligned with coordinate axis, so can reflections,
+Just as rotations can be used to rotate vectors to be aligned with coordinate axes, so can reflections,
 but in this case it works for vectors in $ℂ^n$, not just $ℝ^2$. We begin with the real case:
 
 **Definition (Householder reflection, real case)** For a given vector
@@ -274,7 +290,8 @@ $$
 **Remark** Why do we choose the the opposite sign of $x_1$ for the default reflection? For stability, but
 we won't discuss this in more detail.
 
-We can extend this definition for complexes:
+We can extend this definition for complex vectors. In this case the choice of the sign is delicate and so we
+only generalise the default choice using a complex-analogue of the sign fuunction.
 
 **Definition (Householder reflection, complex case)** For a given vector
 $𝐱 ∈ ℂ^n$, define the Householder reflection as
