@@ -125,59 +125,7 @@ scatter!(𝐱, f.(𝐱); label="samples")
 ## TODO: interpolate 1/(10x^2 + 1) and 1/(25x^2 + 1) at $n$ evenly spaced points, plotting both solutions evaluated at
 ## the plotting grid with 1000 points, for $n = 50$ and $400$.
 
-## SOLUTION
 
-n = 50
-𝐱 = range(-1, 1; length=n)
-𝐠 = range(-1, 1; length=1000) # plotting grid
-
-V = 𝐱 .^ (0:n-1)'
-V_g = 𝐠 .^ (0:n-1)'
-
-f_4 = x -> 1/(4x^2 + 1)
-𝐜_4 = V \ f_4.(𝐱)
-f_25 = x -> 1/(25x^2 + 1)
-𝐜_25 = V \ f_25.(𝐱)
-
-plot(𝐠, V_g*𝐜_4; ylims=(-1,1))
-plot!(𝐠, V_g*𝐜_25)
-## We see large errors near ±1 for both examples. 
-
-
-n = 400
-𝐱 = range(-1, 1; length=n)
-
-V = 𝐱 .^ (0:n-1)'
-V_g = 𝐠 .^ (0:n-1)'
-f_4 = x -> 1/(4x^2 + 1)
-𝐜_4 = V \ f_4.(𝐱)
-f_25 = x -> 1/(25x^2 + 1)
-𝐜_25 = V \ f_25.(𝐱)
-
-plot(𝐠, V_g*𝐜_4; ylims=(-1,1))
-plot!(𝐠, V_g*𝐜_25)
-##  M = 4 appears to converge whilst M = 25 breaks down.
-
-## Now do big float
-n = 400
-𝐱 = range(big(-1), 1; length=n)
-𝐠 = range(big(-1), 1; length=1000) # plotting grid
-
-V = 𝐱 .^ (0:n-1)'
-V_g = 𝐠 .^ (0:n-1)'
-
-f_4 = x -> 1/(4x^2 + 1)
-𝐜_4 = V \ f_4.(𝐱)
-f_25 = x -> 1/(25x^2 + 1)
-𝐜_25 = V \ f_25.(𝐱)
-
-plot(𝐠, V_g*𝐜_4; ylims=(-1,1))
-plot!(𝐠, V_g*𝐜_25)
-## With M = 4 it looks like it now is converging. This suggests the issue before was numerical error.
-## For M = 25 the solution is even less accurate, which suggests the issue is a lack of mathematical
-## convergence.
-
-## END
 # ------
 
 # ### IV.1.2 Interpolatory quadrature rules
@@ -199,17 +147,7 @@ function interpolatoryquadrature(f::AbstractVector, x::AbstractVector)
         error("lengths must match")
     end
     ## TODO: Compute the coefficients of the interpolatory polynomial and integrate it exactly.
-    ## SOLUTION
-        n = length(f)
-        V = x .^ (0:n-1)'
-        c = V \ f
-        ret = 0
-        ## There are simpler ways to write the following but for clearness lets just do a for-loop:
-        for k = 1:n
-            ret += c[k]/k # use the fact that ∫_0^1 x^k dx = 1/(k+1)
-        end
-        ret
-    ## END
+    
 end
 
 x = range(0, 1, 10)
@@ -224,16 +162,7 @@ x = range(0, 1, 10)
 
 nanabs(x) = x == 0 ? NaN : abs(x)
 ## TODO: plot the errors for 2,…,100 evenly spaced points for approximating the integral of exp(x) and 1/(25x^2+1)
-## SOLUTION
-using Plots
-ns = 2:100
-errs = [(x = range(0,1,n); nanabs(interpolatoryquadrature(exp.(x), x) - (exp(1)-1))) for n=ns]
-plot(ns, errs;yscale=:log10) # error appears exponential (actually it's faster than exponential!)
-errs = [(x = range(0,1,n); nanabs(interpolatoryquadrature(1 ./ (25x.^2 .+ 1), x) - atan(5)/5)) for n=ns]
-plot!(ns, errs;yscale=:log10) # error appears to decay exponentially but then gets stuck 😢 But does better than interpolation
-errs = [(x = range(0,big(1),n); nanabs(interpolatoryquadrature(1 ./ (25x.^2 .+ 1), x) - atan(big(5))/5)) for n=ns]
-plot!(ns, errs;yscale=:log10) # using BigFloat does better
-## END
+
 
 
 # **Problem 2(c)** Repeat the previous problem with the points $x_j = (\cos θ_j + 1)/2$ where $θ_j$ are $n$ evenly spaced points
@@ -241,17 +170,7 @@ plot!(ns, errs;yscale=:log10) # using BigFloat does better
 
 
 ## TODO: plot the errors for 2,…,100 points that are cosines of evenly spaced points, shifted/scaled to be between 0 and 1.
-## SOLUTION
-errs = [(x = (cos.(range(0,big(π),n)) .+ 1)/2; nanabs(interpolatoryquadrature(1 ./ (25x.^2 .+ 1), x) - atan(5)/5)) for n=ns]
-ns = 2:100
-errs = [(x = (cos.(range(0,π,n)) .+ 1)/2; nanabs(interpolatoryquadrature(exp.(x), x) - (exp(1)-1))) for n=ns]
-plot(ns, errs;yscale=:log10) # error still appears exponential at roughly the same rate as evenly spaced point
-errs = [(x =  (cos.(range(0,π,n)) .+ 1)/2; nanabs(interpolatoryquadrature(1 ./ (25x.^2 .+ 1), x) - atan(5)/5)) for n=ns]
-plot!(ns, errs;yscale=:log10) # errorstill  appears to decay exponentially but then gets stuck 😢
-errs = [(x =  (cos.(range(0,big(π),n)) .+ 1)/2; nanabs(interpolatoryquadrature(1 ./ (25x.^2 .+ 1), x) - atan(big(5))/5)) for n=ns]
-plot!(ns, errs;yscale=:log10) # using BigFloat does better. This choice of points converges much faster.
 
-## END
 
 # **Problem 3** Typically it's more convenient to compute the quadrature weights $w_j$ so that
 # $$
@@ -261,16 +180,7 @@ plot!(ns, errs;yscale=:log10) # using BigFloat does better. This choice of point
 
 function interpolatoryweights(x::AbstractVector)
     ## TODO: Construct the interpolatory quadrature weights as a vector by solving a linear system involving V'
-    ## SOLUTION
-    ## The Vandermonde matrix gives the map to coefficients. We just need to multiply by a row vector
-    ## corresponding to integrating the monomials exactly. That is, multiplying a vector by
-    ## [1 1/2 … 1/n] * inv(V)
-    ## gives the weights as a row vector. But we want a column vector here so we transpose this.
-    ## Here's a very brief version, but feel free to translate this to a comprehension or for-loop:
-    n = length(x)
-    V = x .^ (0:n-1)'
-    V' \ (1 ./ (1:n))
-    ## END
+    
 end
 
 ## We test on the example from the notes:
@@ -329,26 +239,7 @@ plot!(𝐠, p.(𝐠); label="quadratic")
 
 ## TODO: approximate 1/(10x^2 + 1) and 1/(25x^2 + 1) using a least squares system.
 
-## SOLUTION
-n = 50 # use basis [1,x,…,x^(49)]
-𝐱 = range(-1, 1; length=500) # least squares grid
-𝐠 = range(-1, 1; length=2000) # plotting grid
 
-V = 𝐱 .^ (0:n-1)'
-V_g = 𝐠 .^ (0:n-1)'
-f_4 = x -> 1/(4x^2 + 1)
-𝐜_4 = V \ f_4.(𝐱)
-f_25 = x -> 1/(25x^2 + 1)
-𝐜_25 = V \ f_25.(𝐱)
-
-plot(𝐠, V_g*𝐜_4; ylims=(-1,1))
-plot!(𝐠, V_g*𝐜_25)
-
-## Yes, now both approximations appear to be converging.
-## This is despite the radius of convergence of both functions being
-## smaller than the interval of interpolation.
-
-## END
 
 
 #-----
@@ -437,76 +328,7 @@ plot!(ns, ns .^ (-1); label="1/n", linestyle=:dash)
 # to 3 digits.
 
 ## TODO: Implement Backward Euler by constructing a lower bidiagonal linear system.
-## SOLUTION
 
-## To help with understanding we will also plot the errors even though this
-## wasn't asked for in the question. We first compare backward and forward Euler:
-c = 0 # u(0) = 0
-f = x -> cos(x)
-n = 10
-
-x = range(0,1;length=n+1)
-h=step(x)
-A = Bidiagonal([1; fill(1/h, n)], fill(-1/h, n), :L)
-ub = A\[c; f.(x[2:end])]
-uf = A \ [c; f.(x[1:end-1])]
-
-plot(x, sin.(x); label="sin(x)", legend=:bottomright)
-scatter!(x, ub; label="backward")
-scatter!(x, uf; label="forward")
-
-#
-
-## Comparing each method's errors, we see that the backward method has the same error as the forward method:
-
-
-function forward_err(u, c, f, n)
-    x = range(0, 1; length = n+1)
-    h = step(x) # equivalent to 1/n
-    L = Bidiagonal([1; fill(1/h, n)], fill(-1/h, n), :L)
-    𝐮 = L\ [c; f.(x[1:end-1])]
-    errs = 𝐮 - u.(x) # compare numerics with "true" result
-    norm(errs, Inf) # measure ∞-norm error
-end
-
-function back_err(u, c, f, n)
-    x = range(0,1;length=n+1)
-    h=step(x)
-    A = Bidiagonal([1; fill(1/h, n)], fill(-1/h, n), :L)
-    ub = A\[c; f.(x[2:end])]
-    norm(ub - u.(x), Inf)
-end
-
-c = 0 # u(0) = 0
-f = x -> cos(x)
-m = (x[1:end-1] + x[2:end])/2 # midpoints
-ns = 10 .^ (1:8) # solve up to n = 10 million
-
-
-scatter(ns, forward_err.(sin, 0, f, ns); xscale=:log10, yscale=:log10, label="forward")
-scatter!(ns, back_err.(sin, 0, f, ns); label="back",alpha=0.5)
-plot!(ns, ns .^ (-1); label="1/n")
-plot!(ns, ns .^ (-2); label="1/n^2")
-
-
-## Finally we get to the last part. One can increase n until
-## 3 digits don't change. Or we can use the fact that the rate of convergence
-## is O(n^(-1)) and guess that n = 100k suffices.
-
-
-c = 0 # u(0) = 0
-n = 100_000
-
-##functions defined in the solutions to problem sheet 2
-f = x -> exp(exp(x)cos(x) + sin(x))
-
-x = range(0,1;length=n+1)
-h=step(x)
-A = Bidiagonal([1; fill(1/h, n)], fill(-1/h, n), :L)
-uf = A\[c; f.(x[2:end])]
-## Gives the values uf u on the grid to at least 3 digits
-
-## END
 
 # **Problem 5(b)** Implement indefinite-integration
 # where we impose the equation on the midpoints $x̃_1,…,x̃_n$ defined as
@@ -522,57 +344,7 @@ uf = A\[c; f.(x[2:end])]
 
 
 ## TODO: Discretise at midpoints rather than our grid. The solution is still approximated on the original grid.
-## SOLUTION
 
-
-## The system is identical to before, just we evaluate the
-## right-hand side at the midpoints.
-
-n = 10
-x = range(0, 1; length=n+1)
-h = step(x)
-A = Bidiagonal([1; fill(1/h, n)], fill(-1/h, n), :L)
-c = 0 # u(0) = 0
-f = x -> cos(x)
-
-x̃ = (x[2:end] + x[1:end-1])/2 # could also be made with a comprehension
-𝐟 = f.(x̃) # evaluate f at all but last points
-𝐮 = A \ [c; 𝐟]
-
-plot(x, sin.(x); label="sin(x)", legend=:bottomright)
-scatter!(x, 𝐮; label="average grid point")
-
-
-#
-
-
-## Comparing the error to the midpoint method, we see that the errors are very similar:
-
-function mid_err(u, c, f, n)
-    x = range(0, 1; length = n+1)
-    h = step(x) # equivalent to 1/n
-    L = Bidiagonal([1; fill(1/h, n)], fill(-1/h, n), :L)
-    x̃ = (x[2:end] + x[1:end-1])/2
-    𝐟 = f.(x̃) # evaluate f at all but last points
-
-    𝐮 = L\ [c; 𝐟]
-    errs = 𝐮 - u.(x) # compare numerics with "true" result
-    norm(errs, Inf) # measure ∞-norm error
-end
-
-c = 0 # u(0) = 0
-f = x -> cos(x)
-ns = 10 .^ (1:8) # solve up to n = 10 million
-
-
-scatter(ns, mid_err.(sin, 0, f, ns); xscale=:log10, yscale=:log10, label="mid")
-scatter!(ns, forward_err.(sin, 0, f, ns); label="forward")
-plot!(ns, ns .^ (-1); label="1/n")
-plot!(ns, ns .^ (-2); label="1/n^2")
-## The error now decreases quadratically. Interestingly: we do not see
-## the same growth in error as we did for computing derivatives. That is:
-## solving an ODE is a more stable process than applying a differential operator.
-## END
 
 # ----
 
@@ -631,22 +403,7 @@ scatter!(x, 𝐮; label="forward")
 
 ## TODO: Implement backward Euler for the case with a variable coefficient.
 
-## SOLUTION
 
-function first_eq(n)
-    x = range(0, 1; length=n+1)
-    #find the step-size h
-    h = step(x)
-    L = Bidiagonal([1; fill(1/h, n) - cos.(x[2:end])], fill(-1/h, n), :L)
-    L \ [1; x[2:end]]
-end
-
-for n in 2 .^ (1:13)
-    println(first_eq(n)[end]) # print out final value
-end
-## We can guess that that $u(1) ≈ 2.96$ to three digits since those digits have stopped changing.
-
-## END
 
 # -----
 
@@ -693,22 +450,7 @@ scatter!(x, 𝐮; label="finite differences")
 # **Problem 7(a)** Estimate the rate of convergence in the ∞-norm using the previous example with an increasing number of grid points.
 
 ## TODO: Plot the ∞-norm error and estimate the convergence rate.
-## SOLUTION
 
-function poisson_err(u, c_0, c_1, f, n)
-    x = range(0, 1; length = n+1)
-    h = step(x)
-    T = Tridiagonal([fill(1/h^2, n-1); 0], [1; fill(-2/h^2, n-1); 1], [0; fill(1/h^2, n-1)])
-    uᶠ = T \ [c_0; f.(x[2:end-1]); c_1]
-    norm(uᶠ - u.(x), Inf)
-end
-
-
-
-ns = 10 .^ (1:8) # solve up to n = 10 million
-scatter(ns, poisson_err.(u, 1, cos(1), f, ns); xscale=:log10, yscale=:log10, label="error")
-plot!(ns, ns .^ (-2); label="1/n^2")
-## END
 
 
 # **Problem 7(b)** Construct a finite-difference approximation to the
@@ -728,24 +470,7 @@ plot!(ns, ns .^ (-2); label="1/n^2")
 
 ## TODO: Generalise the second-order finite differences to allow for a $k^2 u$ term.
 
-## SOLUTION
-## We do something slightly different and use SymTridiagonal.
-## You can also do this with Tridiagonal
-function helm(k, n)
-    x = range(0, 1; length = n+1)
-    h = step(x)
-    T = SymTridiagonal(ones(n-1)*(-2/h^2 + k^2),ones(n-2)*1/h^2)
-    u = T \ exp.(x[2:end-1])
-    [0; u; 0]
-end
 
-k = 10
-u = x -> (-cos(k*x) + exp(x)cos(k*x)^2 + cot(k)sin(k*x) - ℯ*cos(k)cot(k)sin(k*x) - ℯ*sin(k)sin(k*x) + exp(x)sin(k*x)^2)/(1 + k^2)
-
-n = 2048
-x = range(0, 1; length=n+1)
-@test norm(helm(k, n) - u.(x)) ≤ 1E-4
-## END
 
 
 
@@ -764,26 +489,11 @@ x = range(0, 1; length=n+1)
 
 ## TODO: Apply lu to the discretisation for Helmholtz derived in the last lab and investigate its structure.
 
-## SOLUTION
 
-
-## We make a function that returns the Helmholtz matrix:
-function helmholtz(n, k)
-    x = range(0, 1; length = n + 1)
-    h = step(x)
-    Tridiagonal([fill(1/h^2, n-1); 0], 
-                    [1; fill(k^2-2/h^2, n-1); 1], 
-                    [0; fill(1/h^2, n-1)])
-end
-
-lu(helmholtz(20, 2), NoPivot()) # L is lower bidiagonal and U is upper bidiagonal, regardless of n or k
-## END
 
 # **Problem 8(b)** Repeat Problem 8(a) but with a PLU factorisation. 
 # Are $L$ and $U$ still banded?
 
 ## TODO: Check sparsity of PLU factorisation
 
-## SOLUTION
-lu(helmholtz(20, 2)).L # L is no longer banded: its penultimate row is dense
-## END
+
