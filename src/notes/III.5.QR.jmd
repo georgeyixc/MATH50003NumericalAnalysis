@@ -202,13 +202,13 @@ we would want to choose the Householder reflection that
 makes this negative, but in this case we want $R$ to have a positive diagonal (partly because the numbers involved become very complicated
 otherwise!). So instead we choose the "wrong" sign and leave it positive. Since $\| 𝐚_1 \|$ = 2 we have
 $$
-𝐲_1 = \Vectt[1,-1,-1,-1]  -\Vectt[2,0,0,0] = \Vectt[-1,-1,1,-1] ⇒ 𝐰_1 = {𝐲_1 \over \| 𝐲_1 \|} = {1 \over 2} \Vectt[-1,-1,-1,-1].
+𝐲_1 = \Vectt[1,-1,-1,-1]  -\Vectt[2,0,0,0] = \Vectt[-1,-1,-1,-1] ⇒ 𝐰_1 = {𝐲_1 \over \| 𝐲_1 \|} = {1 \over 2} \Vectt[-1,-1,-1,-1].
 $$
  Hence
 $$
-Q_1 :=  I - {1 \over 2} \begin{bmatrix} -1 \\ -1 \\ 1 \\ -1 \end{bmatrix} \begin{bmatrix} -1 & -1 & 1 & -1 \end{bmatrix} =
+Q_1 :=  I - {1 \over 2} \begin{bmatrix} -1 \\ -1 \\ -1 \\ -1 \end{bmatrix} \begin{bmatrix} -1 & -1 & -1 & -1 \end{bmatrix} =
  {1 \over 2} \begin{bmatrix}
-1 & -1 & 1 & -1 \\
+1 & -1 & -1 & -1 \\
 -1 & 1 & -1 & -1 \\
 -1 & -1 & 1 & -1 \\
 -1 & -1 & -1 &  1

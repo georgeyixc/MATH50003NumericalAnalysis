@@ -154,13 +154,13 @@ A = \begin{bmatrix}
 \]
 For the first column, since the entry $a_{11} > 0$ on a computer  we would want to choose the Householder reflection that makes this negative, but in this case we want $R$ to have a positive diagonal (partly because the numbers involved become very complicated otherwise!). So instead we choose the "wrong" sign and leave it positive. Since $\| \ensuremath{\bm{\a}}_1 \|$ = 2 we have
 \[
-\ensuremath{\bm{\y}}_1 = \Vectt[1,-1,-1,-1]  -\Vectt[2,0,0,0] = \Vectt[-1,-1,1,-1] \ensuremath{\Rightarrow} \ensuremath{\bm{\w}}_1 = {\ensuremath{\bm{\y}}_1 \over \| \ensuremath{\bm{\y}}_1 \|} = {1 \over 2} \Vectt[-1,-1,-1,-1].
+\ensuremath{\bm{\y}}_1 = \Vectt[1,-1,-1,-1]  -\Vectt[2,0,0,0] = \Vectt[-1,-1,-1,-1] \ensuremath{\Rightarrow} \ensuremath{\bm{\w}}_1 = {\ensuremath{\bm{\y}}_1 \over \| \ensuremath{\bm{\y}}_1 \|} = {1 \over 2} \Vectt[-1,-1,-1,-1].
 \]
 Hence
 \[
-Q_1 :=  I - {1 \over 2} \begin{bmatrix} -1 \\ -1 \\ 1 \\ -1 \end{bmatrix} \begin{bmatrix} -1 & -1 & 1 & -1 \end{bmatrix} =
+Q_1 :=  I - {1 \over 2} \begin{bmatrix} -1 \\ -1 \\ -1 \\ -1 \end{bmatrix} \begin{bmatrix} -1 & -1 & -1 & -1 \end{bmatrix} =
  {1 \over 2} \begin{bmatrix}
-1 & -1 & 1 & -1 \\
+1 & -1 & -1 & -1 \\
 -1 & 1 & -1 & -1 \\
 -1 & -1 & 1 & -1 \\
 -1 & -1 & -1 &  1
