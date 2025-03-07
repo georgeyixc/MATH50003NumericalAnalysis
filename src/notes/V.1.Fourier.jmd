@@ -67,7 +67,7 @@ $$
 We first state a  basic results (whose proof is beyond the scope of this module):
 
 **Theorem (Fourier series equivalence)**
-If $f, g : 𝕋 → ℂ$ are continuous and $\hat f_k = \hat g_k$ for all $k ∈ ℤ$ then $f = g$.
+If $f, g : 𝕋 → ℂ$ are periodic and continuous and $\hat f_k = \hat g_k$ for all $k ∈ ℤ$ then $f = g$.
 
 **Proof**
 See [Körner 2022 (Theorem 2.4)](https://www.cambridge.org/core/books/fourier-analysis/5FD8F0FD69DDB139019655D7F8440D2F).
@@ -107,7 +107,7 @@ Since $f$ and $g$ are continuous and share the same Fourier coefficients, they a
 When does a function have absolutely convergent Fourier coefficients? We can deduce it from
 periodic differentiability of the function:
 
-**Lemma (differentiability and absolutely convergence)** If $f : ℝ → ℂ$ and $f'$ are periodic
+**Lemma (differentiability and absolutely convergence)** If $f : 𝕋 → ℂ$ and $f'$ are periodic
  and $f''$ is uniformly bounded, then $\vchatf ∈ ℓ^1$.
 
 **Proof**

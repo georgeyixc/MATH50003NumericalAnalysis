@@ -2,7 +2,6 @@
 \section{Fourier Expansions}
 Fourier series are a powerful tool in wide areas of mathematics, including solving partial differential equations, signal processing, and elsewhere. They are also very useful in computational methods, particularly for problems that have periodicity. Periodicity arises naturally when solving problems in radial coordinates, or when approximating a problem on the real line by a periodic problem with a large period. Fourier series are also related to orthogonal polynomials, which can be used for non-periodic problems.
 
-\subsection{Basics of Fourier series}
 The most fundamental basis is (complex) Fourier: we have $\E^{\I k \ensuremath{\theta}}$ are orthogonal with respect to the inner product
 \[
 \ensuremath{\langle}f, g \ensuremath{\rangle} := {1 \over 2\ensuremath{\pi}} \ensuremath{\int}_0^{2\ensuremath{\pi}} \bar f(\ensuremath{\theta}) g(\ensuremath{\theta}) {\rm d}\ensuremath{\theta},
@@ -34,6 +33,7 @@ f(\ensuremath{\theta}) = \underbrace{[1 | \E^{\I\ensuremath{\theta}} | \E^{2\I\e
 \]
 Essentially, expansions in bases are viewed as a way of turning \emph{functions} into (infinite) \emph{vectors}. And (differential) \emph{operators} into \emph{matrices}.
 
+\subsection{Convergence of Fourier series}
 In analysis one typically works with continuous functions and relates results to continuity. In numerical analysis we inherently have to work with \emph{vectors}, so it is more natural to  focus on the case where the \emph{Fourier coefficients} $\hat f_k$ are \emph{absolutely convergent}:
 
 \begin{definition}[absolute convergent] We write $\vchatf \ensuremath{\in} \ensuremath{\ell}^1$ if it is absolutely convergent, or in otherwords, the $1$-norm of $\vchatf$ is bounded:
@@ -44,7 +44,7 @@ In analysis one typically works with continuous functions and relates results to
 
 We first state a  basic results (whose proof is beyond the scope of this module):
 
-\begin{theorem}[Fourier series equivalence] If $f, g : \ensuremath{\bbT} \ensuremath{\rightarrow} \ensuremath{\bbC}$ are continuous and $\hat f_k = \hat g_k$ for all $k \ensuremath{\in} \ensuremath{\bbZ}$ then $f = g$.
+\begin{theorem}[Fourier series equivalence] If $f, g : \ensuremath{\bbT} \ensuremath{\rightarrow} \ensuremath{\bbC}$ are periodic and continuous and $\hat f_k = \hat g_k$ for all $k \ensuremath{\in} \ensuremath{\bbZ}$ then $f = g$.
 
 \end{theorem}
 \textbf{Proof} See \href{https://www.cambridge.org/core/books/fourier-analysis/5FD8F0FD69DDB139019655D7F8440D2F}{Körner 2022 (Theorem 2.4)}. \ensuremath{\QED}
@@ -77,7 +77,7 @@ Since $f$ and $g$ are continuous and share the same Fourier coefficients, they a
 
 When does a function have absolutely convergent Fourier coefficients? We can deduce it from periodic differentiability of the function:
 
-\begin{lemma}[differentiability and absolutely convergence] If $f : \ensuremath{\bbR} \ensuremath{\rightarrow} \ensuremath{\bbC}$ and $f'$ are periodic  and $f''$ is uniformly bounded, then $\vchatf \ensuremath{\in} \ensuremath{\ell}^1$.
+\begin{lemma}[differentiability and absolutely convergence] If $f : \ensuremath{\bbT} \ensuremath{\rightarrow} \ensuremath{\bbC}$ and $f'$ are periodic  and $f''$ is uniformly bounded, then $\vchatf \ensuremath{\in} \ensuremath{\ell}^1$.
 
 \end{lemma}
 \textbf{Proof} Integrate by parts twice using the fact that $f(0) = f(2\ensuremath{\pi})$, $f'(0) = f'(2\ensuremath{\pi})$:
