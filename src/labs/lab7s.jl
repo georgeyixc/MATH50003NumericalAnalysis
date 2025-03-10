@@ -669,7 +669,7 @@ end
 #     1/h^2 & -2/h^2 & 1/h \\
 #     & ⋱ & ⋱ & ⋱ \\
 #    && 1/h^2 & -2/h^2 & 1/h \\
-#    &&&& 1 \end{bmatrix}}_A \underbrace{\begin{bmatrix}u_0\\u_1\\⋮\\u_n\end{bmatrix} }_{𝐮} = \underbrace{\begin{bmatrix}c\\ f(x_0)\\ f(x_1)\\ ⋮ \\ f(x_{n-1})\\ d\end{bmatrix} }_{𝐛}
+#    &&&& 1 \end{bmatrix}}_A \underbrace{\begin{bmatrix}u_0\\u_1\\⋮\\u_n\end{bmatrix} }_{𝐮} = \underbrace{\begin{bmatrix}c\\ f(x_1)\\ f(x_2)\\ ⋮ \\ f(x_{n-1})\\ d\end{bmatrix} }_{𝐛}
 # $$
 # We first construct the matrix $A$ using `Tridiagonal`:
 n = 20
