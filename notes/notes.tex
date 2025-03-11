@@ -210,7 +210,7 @@ In this chapter we discuss:
 \begin{enumerate}
 \item I.1 Rectangular rule: we review the rectangular rule for integration and deduce the {\it converge rate} of the approximation. In the lab/problem sheet  we investigate its implementation as well as extensions to the Trapezium rule.
 \item I.2 Divided differences: we investigate approximating derivatives by a divided difference and again deduce the convergence rates. In the lab/problem sheet we extend the approach to the central differences formula and computing second derivatives. We also observe a mystery: the approximations may have significant errors in practice, and there is a limit to the accuracy.
-\item I.3 Dual numbers: we introduce the algebraic notion of a {\it dual number} which allows the implemention of {\it forward-mode automatic differentiation}, a high accuracy alternative to divided differences for computing derivatives.
+\item I.3 Dual numbers: we introduce the algebraic notion of a {\it dual number} which allows the implementation of {\it forward-mode automatic differentiation}, a high accuracy alternative to divided differences for computing derivatives.
 \item I.4 Newton's method: Newton's method is a basic approach for computing roots/zeros of a function. We use dual numbers to implement this algorithm.
 \end{enumerate}
 
@@ -325,14 +325,43 @@ as (approximate) solutions to linear systems.  We investigate using this approac
 
 \chapter{Orthogonal Polynomials}
 
+Fourier series are very powerful for approximating periodic functions.
+If periodicity is lost, however, the Fourier coefficients are no longer in $\ell^1$ and uniform convergence is lost.
+In this chapter
+we introduce {\it Orthogonal Polynomials (OPs)} which are more effective for computing with
+non-periodic (but still continuous/differentiable) functions. That is we consider expansions of the form
+$$
+f(x) = \sum_{k=0}^\infty c_k p_k(x)
+$$
+where $p_k(x)$ are special families of polynomials and $c_k$ are expansion coefficients.
+The approximation of the coefficients $c_k \approx c_k^n$ using quadrature will be explored later.
+
+Why not use monomials as in Taylor series? Hidden in the discussion on Fourier series was that we could effectively
+compute Taylor coefficients by evaluating on the unit circle in the complex plane, only if the radius of convergence
+was 1. Many functions are smooth on say $[-1,1]$ but have non-convergent Taylor series, e.g.:
+$$
+{1 \over 25x^2 + 1}
+$$
+While orthogonal polynomials span the same space as monomials, orthogonal polynomials are much more stable and can effectively and accurately
+approximate such functions. In particular, where we saw that interpolation
+by monomials at evenly spaced points performed horribly in practice we can use orthogonal polynomials
+with specially chosen points to get reliable interpolation of functions. 
+
+
+
+
+
+
 \begin{enumerate}
-    \item VI.1 Orthogonal Polynomials: For non-periodic functions we consider orthogonal polynomials, and discuss their basic properties.
+    \item VI.1 General Orthogonal Polynomials: For non-periodic functions we consider the definition of orthogonal polynomials, and discuss their basic properties.
     \item VI.2 Classical Orthogonal Polynomials: For certain weights, orthogonal polynomials are classical and have addition structure that are useful for computations.
     \item VI.3 Gaussian Quadrature: Finally, we revisit the  problem of computing integrals, and see that using orthogonal polynomials we can derive much more accurate methods.
     \end{enumerate}
 
 We stop at integration, but Fourier and orthogonal polynomial expansions also lead to very effective scheme for solving differential equations
-and many other applications.
+and many other applications. In addition to numerics, OPs play a very important role in many mathematical areas
+including functional analysis, integrable systems, singular integral equations,
+complex analysis, and random matrix theory.
 
 
 \input{VI.1.OrthogonalPolynomials}

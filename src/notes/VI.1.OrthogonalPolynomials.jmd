@@ -1,35 +1,6 @@
-# Orthogonal Polynomials
+# General Orthogonal Polynomials
 
-Fourier series are very powerful for approximating periodic functions.
-If periodicity is lost, however, the Fourier coefficients are no longer in $ℓ^1$ and uniform convergence is lost.
-In this chapter
-we introduce _Orthogonal Polynomials (OPs)_ are more effective for computing with
-non-periodic (but still continuous/differentiable) functions. That is we consider expansions of the form
-$$
-f(x) = \sum_{k=0}^∞ c_k p_k(x)
-$$
-where $p_k(x)$ are special families of polynomials and $c_k$ are expansion coefficients.
-The approximation of the coefficients $c_k ≈ c_k^n$ using quadrature will be explored later.
-
-Why not use monomials as in Taylor series? Hidden in the discussion on Fourier series was that we could effectively
-compute Taylor coefficients by evaluating on the unit circle in the complex plane, _only_ if the radius of convergence
-was 1. Many functions are smooth on say $[-1,1]$ but have non-convergent Taylor series, e.g.:
-$$
-{1 \over 25x^2 + 1}
-$$
-While orthogonal polynomials span the same space as monomials, orthogonal polynomials are _much_ more stable and can effectively and accurately
-approximate such functions. In particular, where we saw that interpolation
-by monomials at evenly spaced points performed horribly in practice we can use orthogonal polynomials
-with specially chosen points to get reliable interpolation of functions. 
-
-
-
-In addition to numerics, OPs play a very important role in many mathematical areas
-including functional analysis, integrable systems, singular integral equations,
-complex analysis, and random matrix theory.
-
-
-## General properties
+A family of orthogonal polynomials is a special case of a _graded polynomial basis_:
 
 **Definition (graded polynomial basis)**
 A set of polynomials $\{p_0(x), p_1(x), … \}$ is _graded_ if $p_n$ is
@@ -55,7 +26,7 @@ are _orthogonal polynomials (OPs)_ if
 $$
 ⟨p_n,p_m⟩ = 0
 $$
-whenever $n ≠ m$. We assume through that integrals of polynomials are finite:
+whenever $n ≠ m$. We assume throughout that integrals of polynomials are finite:
 $$
 ∫_a^b  x^k w(x) {\rm d} x < ∞.
 $$

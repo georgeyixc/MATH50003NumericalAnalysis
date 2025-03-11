@@ -1,20 +1,7 @@
 
-\section{Orthogonal Polynomials}
-Fourier series are very powerful for approximating periodic functions. If periodicity is lost, however, the Fourier coefficients are no longer in $\ensuremath{\ell}^1$ and uniform convergence is lost. In this chapter we introduce \emph{Orthogonal Polynomials (OPs)} are more effective for computing with non-periodic (but still continuous/differentiable) functions. That is we consider expansions of the form
-\[
-f(x) = \sum_{k=0}^\ensuremath{\infty} c_k p_k(x)
-\]
-where $p_k(x)$ are special families of polynomials and $c_k$ are expansion coefficients. The approximation of the coefficients $c_k \ensuremath{\approx} c_k^n$ using quadrature will be explored later.
+\section{General Orthogonal Polynomials}
+A family of orthogonal polynomials is a special case of a \emph{graded polynomial basis}:
 
-Why not use monomials as in Taylor series? Hidden in the discussion on Fourier series was that we could effectively compute Taylor coefficients by evaluating on the unit circle in the complex plane, \emph{only} if the radius of convergence was 1. Many functions are smooth on say $[-1,1]$ but have non-convergent Taylor series, e.g.:
-\[
-{1 \over 25x^2 + 1}
-\]
-While orthogonal polynomials span the same space as monomials, orthogonal polynomials are \emph{much} more stable and can effectively and accurately approximate such functions. In particular, where we saw that interpolation by monomials at evenly spaced points performed horribly in practice we can use orthogonal polynomials with specially chosen points to get reliable interpolation of functions. 
-
-In addition to numerics, OPs play a very important role in many mathematical areas including functional analysis, integrable systems, singular integral equations, complex analysis, and random matrix theory.
-
-\subsection{General properties}
 \begin{definition}[graded polynomial basis] A set of polynomials $\{p_0(x), p_1(x), \ensuremath{\ldots} \}$ is \emph{graded} if $p_n$ is precisely degree $n$: i.e.,
 \[
 p_n(x) = k_n x^n + k_n^{(1)} x^{n-1} + \ensuremath{\cdots} + k_n^{(n-1)} x + k_n^{(n)}
