@@ -338,7 +338,7 @@ function shrodingereigvals(n, L)
     ## TODO: Use eigvals with a SymTridiagonal discretisation to approximate the eigenvalues of a Schrödinger operator
     ## SOLUTION
     h = step(x)
-    eigvals(SymTridiagonal(2/h^2 .+  x[2:end].^2, fill(-1/h^2, n-1)))
+    eigvals(SymTridiagonal(2/h^2 .+  x[2:end-1].^2, fill(-1/h^2, n-2)))
     ## END
 end
 
